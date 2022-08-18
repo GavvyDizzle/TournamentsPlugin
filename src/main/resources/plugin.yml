@@ -1,0 +1,16 @@
+name: TournamentsPlugin
+version: '${project.version}'
+main: com.github.gavvydizzle.tournamentsplugin.TournamentsPlugin
+api-version: 1.18
+depend: [ ServerUtils, Vault ]
+softdepend: [ GangsPlugin, PlaceholderAPI, PrisonEnchants, ShopGUIPlus ]
+authors: [ GavvyDizzle ]
+description: Individual and Gangs tournament plugin for Spigot
+commands:
+  tournadmin:
+    description: TournamentPlugin admin commands
+    permission: tournamentplugin.admin
+    permission-message: Insufficient permission
+  tourn:
+    aliases: [tournament, tournaments]
+    description: TournamentPlugin player commands

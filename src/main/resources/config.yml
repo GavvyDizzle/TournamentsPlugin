@@ -1,0 +1,8 @@
+# This is the date format that all of your tournaments must follow. This is now date placeholders will display as well.
+# If you would like to use a different format, reference this page: https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
+dateFormat: 'yyyy-MM-dd HH:mm'
+
+# Set this to a different time zone to use a different time zone than your server is running on.
+# See the section: "Available Time Zones" https://jenkov.com/tutorials/java-date-time/java-util-timezone.html
+# Leave this set to '' if you want to keep using your server's time
+timeZone: 'EST'
