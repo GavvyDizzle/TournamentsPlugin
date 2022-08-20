@@ -45,7 +45,7 @@ public class AdminReloadTournamentCommand extends SubCommand {
         }
 
         TournamentManager tournamentManager = TournamentsPlugin.getInstance().getTournamentManager();
-        Tournament tournament = tournamentManager.getActiveTournamentByID(args[1]);
+        Tournament tournament = tournamentManager.getTournamentByID(args[1]);
 
         if (tournament == null) {
             sender.sendMessage(ChatColor.RED + "No tournament exists with the id: " + args[1]);

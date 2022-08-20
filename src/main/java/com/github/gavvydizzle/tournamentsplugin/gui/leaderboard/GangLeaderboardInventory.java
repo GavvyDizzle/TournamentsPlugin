@@ -48,7 +48,7 @@ public class GangLeaderboardInventory extends LeaderboardInventory {
                     lore.add(str.replace("{name}", gangParticipant.getGangName())
                             .replace("{placement}", "" + (i + 1))
                             .replace("{total_placements}", "" + gangTournament.getSortedGangs().size())
-                            .replace("{score}", "" + gangParticipant.getScore()));
+                            .replace("{score}", "" + Numbers.withSuffix(gangParticipant.getScore())));
                 }
 
                 meta.setLore(lore);
