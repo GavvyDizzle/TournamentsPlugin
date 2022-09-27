@@ -16,7 +16,7 @@ public class Objective {
      * @return True if the ObjectiveType matches for both
      */
     public boolean isMatch(@NotNull Objective obj) {
-        return objectiveType == obj.objectiveType;
+        return objectiveType == obj.objectiveType && !(obj instanceof MaterialObjective) && !(obj instanceof EntityTypeObjective);
     }
 
     @Override

@@ -10,7 +10,6 @@ import net.brcdev.shopgui.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
@@ -109,13 +108,17 @@ public class ObjectiveManager implements Listener {
      * @param amount     The amount to increment by
      */
     public synchronized void incrementObjective(@NotNull Player player, @NotNull Objective objective, long amount) {
-        if (isDebugging && player.hasPermission("tournamentsadmin.debug")) {
+        boolean debug = isDebugging && player.hasPermission("tournamentsadmin.debug");
+        if (debug) {
             player.sendMessage(ChatColor.YELLOW + "" +  ChatColor.BOLD + "[Tourn Debug] " + ChatColor.WHITE + "Progressing: " + objective);
         }
 
         for (Tournament tournament : tournamentManager.getActiveTournaments()) {
             if (objective.isMatch(tournament.getObjective())) {
                 tournament.incrementProgress(player, amount);
+                if (debug) {
+                    player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "- [Tourn Debug] " + ChatColor.GREEN + "Progressed " + tournament.getId() + " by " + amount);
+                }
             }
         }
     }
