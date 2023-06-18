@@ -1,0 +1,19 @@
+# For internal use
+debug: false
+
+# Disable worlds for all tournament types
+disabledWorlds: []
+
+# Disable worlds for specific tournament types
+disabledWorldsByType:
+  CRAFT:
+    - world1
+    - world2
+  EAT: []
+  EARN: []
+  FISH: []
+  KILL: []
+  MINE: []
+  MINE_RAW: []
+  SELL_ITEM: []
+  SMELT: []

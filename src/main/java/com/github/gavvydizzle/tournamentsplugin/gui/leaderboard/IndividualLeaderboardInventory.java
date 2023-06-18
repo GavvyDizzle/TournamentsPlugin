@@ -4,6 +4,7 @@ import com.github.gavvydizzle.tournamentsplugin.TournamentsPlugin;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.IndividualParticipant;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.IndividualTournament;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.Tournament;
+import com.github.mittenmc.serverutils.ItemStackUtils;
 import com.github.mittenmc.serverutils.Numbers;
 import com.github.mittenmc.serverutils.PlayerHeads;
 import org.bukkit.Bukkit;
@@ -13,7 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IndividualLeaderboardInventory extends LeaderboardInventory {
 
@@ -31,26 +32,24 @@ public class IndividualLeaderboardInventory extends LeaderboardInventory {
         IndividualTournament individualTournament = (IndividualTournament) tournament;
 
         Bukkit.getScheduler().runTaskAsynchronously(TournamentsPlugin.getInstance(), () -> {
+            HashMap<String, String> map = new HashMap<>();
+
             for (int i = 0; i < Math.min(individualTournament.getSortedParticipants().size(), numPlacementsShown); i++) {
                 IndividualParticipant individualParticipant = individualTournament.getSortedParticipants().get(i);
 
                 ItemStack leaderboardItem = PlayerHeads.getHead(individualParticipant.getUniqueId());
-
                 ItemMeta meta = leaderboardItem.getItemMeta();
                 assert meta != null;
-                meta.setDisplayName(placementItemName.replace("{name}", individualParticipant.getName()));
-
-                ArrayList<String> lore = new ArrayList<>(placementItemLore.size());
-                for (String str : placementItemLore) {
-                    lore.add(str.replace("{name}", individualParticipant.getName())
-                            .replace("{placement}", "" + (i + 1))
-                            .replace("{total_placements}", "" + individualTournament.getSortedParticipants().size())
-                            .replace("{score}", "" + Numbers.withSuffix(individualParticipant.getScore())));
-                }
-
-                meta.setLore(lore);
+                meta.setDisplayName(placementItemName);
+                meta.setLore(placementItemLore);
                 leaderboardItem.setItemMeta(meta);
 
+                map.put("{name}", individualParticipant.getName());
+                map.put("{placement}", String.valueOf(i + 1));
+                map.put("{total_placements}", String.valueOf(individualTournament.getSortedParticipants().size()));
+                map.put("{score}", Numbers.withSuffix(individualParticipant.getScore()));
+
+                ItemStackUtils.replacePlaceholders(leaderboardItem, map);
                 inventory.setItem(i, leaderboardItem);
             }
 
@@ -59,23 +58,18 @@ public class IndividualLeaderboardInventory extends LeaderboardInventory {
             if (individualParticipant != null) {
 
                 ItemStack leaderboardItem = PlayerHeads.getHead(player.getUniqueId());
-
                 ItemMeta meta = leaderboardItem.getItemMeta();
                 assert meta != null;
-                meta.setDisplayName(personalPlacementItemName.replace("{name}", individualParticipant.getName()));
-
-                ArrayList<String> lore = new ArrayList<>(personalPlacementItemLore.size());
-                for (String str : personalPlacementItemLore) {
-                    lore.add(str
-                            .replace("{name}", individualParticipant.getName())
-                            .replace("{placement}", "" + individualTournament.getPlacement(individualParticipant))
-                            .replace("{total_placements}", "" + individualTournament.getSortedParticipants().size())
-                            .replace("{score}", "" + Numbers.withSuffix(individualParticipant.getScore())));
-                }
-
-                meta.setDisplayName(meta.getDisplayName().replace("{name}", individualParticipant.getName()));
-                meta.setLore(lore);
+                meta.setDisplayName(personalPlacementItemName);
+                meta.setLore(personalPlacementItemLore);
                 leaderboardItem.setItemMeta(meta);
+
+                map.put("{name}", individualParticipant.getName());
+                map.put("{placement}", String.valueOf(individualTournament.getPlacement(individualParticipant)));
+                map.put("{total_placements}", String.valueOf(individualTournament.getSortedParticipants().size()));
+                map.put("{score}", Numbers.withSuffix(individualParticipant.getScore()));
+
+                ItemStackUtils.replacePlaceholders(leaderboardItem, map);
                 inventory.setItem(personalPlacementItemSlot, leaderboardItem);
             }
         });

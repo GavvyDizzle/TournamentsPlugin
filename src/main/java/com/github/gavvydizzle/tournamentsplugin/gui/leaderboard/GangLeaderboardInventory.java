@@ -5,6 +5,7 @@ import com.github.gavvydizzle.tournamentsplugin.tournaments.GangParticipant;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.GangTournament;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.Tournament;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.TournamentTimeType;
+import com.github.mittenmc.serverutils.ItemStackUtils;
 import com.github.mittenmc.serverutils.Numbers;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,7 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GangLeaderboardInventory extends LeaderboardInventory {
 
@@ -30,80 +31,66 @@ public class GangLeaderboardInventory extends LeaderboardInventory {
         }
 
         GangTournament gangTournament = (GangTournament) tournament;
+        HashMap<String, String> map = new HashMap<>();
 
         if (tournament.getTimeType() == TournamentTimeType.COMPLETED) {
-            ItemStack paper = new ItemStack(Material.PAPER);
-
             for (int i = 0; i < Math.min(gangTournament.getSortedGangs().size(), numPlacementsShown); i++) {
                 GangParticipant gangParticipant = gangTournament.getSortedGangs().get(i);
 
-                ItemStack leaderboardItem = paper.clone();
-
+                ItemStack leaderboardItem = new ItemStack(Material.PAPER);
                 ItemMeta meta = leaderboardItem.getItemMeta();
                 assert meta != null;
-                meta.setDisplayName(placementItemName.replace("{name}", gangParticipant.getGangName()));
-
-                ArrayList<String> lore = new ArrayList<>(placementItemLore.size());
-                for (String str : placementItemLore) {
-                    lore.add(str.replace("{name}", gangParticipant.getGangName())
-                            .replace("{placement}", "" + (i + 1))
-                            .replace("{total_placements}", "" + gangTournament.getSortedGangs().size())
-                            .replace("{score}", "" + Numbers.withSuffix(gangParticipant.getScore())));
-                }
-
-                meta.setLore(lore);
+                meta.setDisplayName(placementItemName);
+                meta.setLore(placementItemLore);
                 leaderboardItem.setItemMeta(meta);
 
+                map.put("{name}", gangParticipant.getGangName());
+                map.put("{placement}", String.valueOf(i + 1));
+                map.put("{total_placements}", String.valueOf(gangTournament.getSortedGangs().size()));
+                map.put("{score}", Numbers.withSuffix(gangParticipant.getScore()));
+
+                ItemStackUtils.replacePlaceholders(leaderboardItem, map);
                 inventory.setItem(i, leaderboardItem);
             }
         }
         else {
             for (int i = 0; i < Math.min(gangTournament.getSortedGangs().size(), numPlacementsShown); i++) {
                 GangParticipant gangParticipant = gangTournament.getSortedGangs().get(i);
+                if (gangParticipant.getGang() == null) continue;
 
-                assert gangParticipant.getGang() != null;
                 ItemStack leaderboardItem = gangParticipant.getGang().getIdentifierItem().clone();
-
                 ItemMeta meta = leaderboardItem.getItemMeta();
                 assert meta != null;
-                meta.setDisplayName(placementItemName.replace("{name}", gangParticipant.getGang().getName()));
-
-                ArrayList<String> lore = new ArrayList<>(placementItemLore.size());
-                for (String str : placementItemLore) {
-                    lore.add(str.replace("{name}", gangParticipant.getGang().getName())
-                            .replace("{placement}", "" + (i + 1))
-                            .replace("{total_placements}", "" + gangTournament.getSortedGangs().size())
-                            .replace("{score}", "" + Numbers.withSuffix(gangParticipant.getScore())));
-                }
-
-                meta.setLore(lore);
+                meta.setDisplayName(placementItemName);
+                meta.setLore(placementItemLore);
                 leaderboardItem.setItemMeta(meta);
 
+                map.put("{name}", gangParticipant.getGang().getName());
+                map.put("{placement}", String.valueOf(i + 1));
+                map.put("{total_placements}", String.valueOf(gangTournament.getSortedGangs().size()));
+                map.put("{score}", Numbers.withSuffix(gangParticipant.getScore()));
+
+                ItemStackUtils.replacePlaceholders(leaderboardItem, map);
                 inventory.setItem(i, leaderboardItem);
             }
 
             GangParticipant gangParticipant = gangTournament.getParticipant(player);
 
-            if (gangParticipant != null) {
+            if (gangParticipant != null && gangParticipant.getGang() != null) {
 
-                assert gangParticipant.getGang() != null;
                 ItemStack leaderboardItem = gangParticipant.getGang().getIdentifierItem().clone();
-
                 ItemMeta meta = leaderboardItem.getItemMeta();
                 assert meta != null;
-                meta.setDisplayName(personalPlacementItemName.replace("{name}", gangParticipant.getGang().getName()));
-
-                ArrayList<String> lore = new ArrayList<>(personalPlacementItemLore.size());
-                for (String str : personalPlacementItemLore) {
-                    lore.add(str.replace("{name}", gangParticipant.getGang().getName())
-                            .replace("{placement}", "" + gangTournament.getPlacement(gangParticipant))
-                            .replace("{total_placements}", "" + gangTournament.getSortedGangs().size())
-                            .replace("{score}", "" + Numbers.withSuffix(gangParticipant.getScore())));
-                }
-
-                meta.setLore(lore);
+                meta.setDisplayName(personalPlacementItemName);
+                meta.setLore(personalPlacementItemLore);
                 leaderboardItem.setItemMeta(meta);
 
+                map.put("{name}", gangParticipant.getGang().getName());
+                map.put("{placement}", String.valueOf(gangTournament.getPlacement(gangParticipant)));
+                map.put("{total_placements}", String.valueOf(gangTournament.getSortedGangs().size()));
+                map.put("{score}", Numbers.withSuffix(gangParticipant.getScore()));
+
+                ItemStackUtils.replacePlaceholders(leaderboardItem, map);
                 inventory.setItem(personalPlacementItemSlot, leaderboardItem);
             }
         }

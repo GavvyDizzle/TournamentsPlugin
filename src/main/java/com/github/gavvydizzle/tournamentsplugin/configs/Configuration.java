@@ -17,7 +17,7 @@ public class Configuration {
         config.options().copyDefaults(true);
         config.addDefault("dateFormat", "yyyy-MM-dd HH:mm");
         config.addDefault("prettyDateFormat", "EEE, d MMM yyyy HH:mm z");
-        config.addDefault("timeZone", TimeZone.getDefault());
+        config.addDefault("timeZone", TimeZone.getDefault().getDisplayName());
         TournamentsPlugin.getInstance().saveConfig();
 
         try {

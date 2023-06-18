@@ -110,14 +110,14 @@ public class ObjectiveManager implements Listener {
     public synchronized void incrementObjective(@NotNull Player player, @NotNull Objective objective, long amount) {
         boolean debug = isDebugging && player.hasPermission("tournamentsadmin.debug");
         if (debug) {
-            player.sendMessage(ChatColor.YELLOW + "" +  ChatColor.BOLD + "[Tourn Debug] " + ChatColor.WHITE + "Progressing: " + objective);
+            player.sendMessage(ChatColor.YELLOW +  String.valueOf(ChatColor.BOLD) + "[Tourn Debug] " + ChatColor.WHITE + "Progressing: " + objective);
         }
 
         for (Tournament tournament : tournamentManager.getActiveTournaments()) {
             if (objective.isMatch(tournament.getObjective())) {
                 tournament.incrementProgress(player, amount);
                 if (debug) {
-                    player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "- [Tourn Debug] " + ChatColor.GREEN + "Progressed " + tournament.getId() + " by " + amount);
+                    player.sendMessage(ChatColor.YELLOW + String.valueOf(ChatColor.BOLD) + "- [Tourn Debug] " + ChatColor.GREEN + "Progressed " + tournament.getId() + " by " + amount);
                 }
             }
         }
@@ -288,10 +288,10 @@ public class ObjectiveManager implements Listener {
         ObjectivesConfig.save();
 
         if (isDebugging) {
-            sender.sendMessage(ChatColor.YELLOW + "" +  ChatColor.BOLD + "[Tourn Debug] " + ChatColor.GREEN + "Is now enabled for admins");
+            sender.sendMessage(ChatColor.YELLOW + String.valueOf(ChatColor.BOLD) + "[Tourn Debug] " + ChatColor.GREEN + "Is now enabled for admins");
         }
         else {
-            sender.sendMessage(ChatColor.YELLOW + "" +  ChatColor.BOLD + "[Tourn Debug] " + ChatColor.RED + "Is now disabled");
+            sender.sendMessage(ChatColor.YELLOW + String.valueOf(ChatColor.BOLD) + "[Tourn Debug] " + ChatColor.RED + "Is now disabled");
         }
     }
 

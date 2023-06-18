@@ -154,11 +154,11 @@ public abstract class Tournament {
     }
 
     public String getTimeRemainingUntilStart() {
-        return Numbers.getTimeFormatted((int) ((startDate.getTime() - System.currentTimeMillis()) / 1000));
+        return Numbers.getTimeFormatted((int) ((startDate.getTime() - System.currentTimeMillis()) / 1000), "Started");
     }
 
     public String getTimeRemainingUntilEnd() {
-        return Numbers.getTimeFormatted((int) ((endDate.getTime() - System.currentTimeMillis()) / 1000));
+        return Numbers.getTimeFormatted((int) ((endDate.getTime() - System.currentTimeMillis()) / 1000), "Ended");
     }
 
     public void cancelTask() {

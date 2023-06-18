@@ -1,43 +1,35 @@
 package com.github.gavvydizzle.tournamentsplugin.commands.admincommands;
 
-import com.github.gavvydizzle.tournamentsplugin.TournamentsPlugin;
+import com.github.gavvydizzle.tournamentsplugin.commands.AdminCommandManager;
+import com.github.gavvydizzle.tournamentsplugin.objectives.ObjectiveManager;
 import com.github.mittenmc.serverutils.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminDebugCommand extends SubCommand {
 
-    @Override
-    public String getName() {
-        return "debug";
-    }
+    private final ObjectiveManager objectiveManager;
 
-    @Override
-    public String getDescription() {
-        return "Toggles objective debugging";
-    }
+    public AdminDebugCommand(AdminCommandManager commandManager, ObjectiveManager objectiveManager) {
+        this.objectiveManager = objectiveManager;
 
-    @Override
-    public String getSyntax() {
-        return "/tournadmin debug";
-    }
-
-    @Override
-    public String getColoredSyntax() {
-        return ChatColor.YELLOW + "Usage: " + getSyntax();
+        setName("debug");
+        setDescription("Toggles objective debugging");
+        setSyntax("/" + commandManager.getCommandDisplayName() + " debug");
+        setColoredSyntax(ChatColor.YELLOW + getSyntax());
+        setPermission(commandManager.getPermissionPrefix() + getName().toLowerCase());
     }
 
     @Override
     public void perform(CommandSender sender, String[] args) {
-        TournamentsPlugin.getInstance().getObjectiveManager().toggleDebugMode(sender);
+        objectiveManager.toggleDebugMode(sender);
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> getSubcommandArguments(CommandSender sender, String[] args) {
         return new ArrayList<>();
     }
 

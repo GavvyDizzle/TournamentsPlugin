@@ -6,7 +6,7 @@
 
     <groupId>com.github.gavvydizzle</groupId>
     <artifactId>TournamentsPlugin</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>TournamentsPlugin</name>
@@ -78,38 +78,32 @@
         <dependency>
             <groupId>com.github.mittenmc</groupId>
             <artifactId>ServerUtils</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.mittenmc</groupId>
             <artifactId>GangsPlugin</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.PlaceholderAPI</groupId>
             <artifactId>PlaceholderAPI</artifactId>
-            <version>2.11.2</version>
+            <version>2.11.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.wax</groupId>
             <artifactId>PrisonEnchants</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.brcdev-minecraft</groupId>
             <artifactId>shopgui-api</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

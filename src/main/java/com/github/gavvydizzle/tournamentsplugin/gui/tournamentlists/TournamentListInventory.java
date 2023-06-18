@@ -6,6 +6,7 @@ import com.github.gavvydizzle.tournamentsplugin.gui.ClickableGUI;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.Tournament;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.TournamentTimeType;
 import com.github.mittenmc.serverutils.ColoredItems;
+import com.github.mittenmc.serverutils.ItemStackUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,7 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class TournamentListInventory implements ClickableGUI {
@@ -183,35 +183,17 @@ public abstract class TournamentListInventory implements ClickableGUI {
 
     protected ItemStack setItemStackPlaceholders(Tournament tournament, ItemStack item) {
         ItemStack itemStack = item.clone();
-        ItemMeta meta = itemStack.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(meta.getDisplayName()
-                .replace("{tournament_name}", tournament.getDisplayName())
-                .replace("{start_date}", Configuration.dateFormat.format(tournament.getStartDate()))
-                .replace("{end_date}", Configuration.dateFormat.format(tournament.getEndDate()))
-                .replace("{pretty_start_date}", Configuration.prettyDateFormat.format(tournament.getStartDate()))
-                .replace("{pretty_end_date}", Configuration.prettyDateFormat.format(tournament.getEndDate()))
-                .replace("{time_until_start}", tournament.getTimeRemainingUntilStart())
-                .replace("{time_until_end}", tournament.getTimeRemainingUntilEnd())
-        );
 
-        if (meta.hasLore()) {
-            ArrayList<String> lore = new ArrayList<>();
-            for (String str : Objects.requireNonNull(meta.getLore())) {
-                lore.add(str
-                        .replace("{tournament_name}", tournament.getDisplayName())
-                        .replace("{start_date}", Configuration.dateFormat.format(tournament.getStartDate()))
-                        .replace("{end_date}", Configuration.dateFormat.format(tournament.getEndDate()))
-                        .replace("{pretty_start_date}", Configuration.prettyDateFormat.format(tournament.getStartDate()))
-                        .replace("{pretty_end_date}", Configuration.prettyDateFormat.format(tournament.getEndDate()))
-                        .replace("{time_until_start}", tournament.getTimeRemainingUntilStart())
-                        .replace("{time_until_end}", tournament.getTimeRemainingUntilEnd())
-                );
-            }
-            meta.setLore(lore);
-            itemStack.setItemMeta(meta);
-        }
+        HashMap<String, String> map = new HashMap<>();
+        map.put("{tournament_name}", tournament.getDisplayName());
+        map.put("{start_date}", Configuration.dateFormat.format(tournament.getStartDate()));
+        map.put("{end_date}", Configuration.dateFormat.format(tournament.getEndDate()));
+        map.put("{pretty_start_date}", Configuration.prettyDateFormat.format(tournament.getStartDate()));
+        map.put("{pretty_end_date}", Configuration.prettyDateFormat.format(tournament.getEndDate()));
+        map.put("{time_until_start}", tournament.getTimeRemainingUntilStart());
+        map.put("{time_until_end}", tournament.getTimeRemainingUntilEnd());
 
+        ItemStackUtils.replacePlaceholders(itemStack, map);
         return itemStack;
     }
 

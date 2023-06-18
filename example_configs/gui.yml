@@ -1,0 +1,77 @@
+backButton:
+  color: red
+  name: '&cBack'
+tournamentLists:
+  inventoryNames:
+    pendingIndividual: Upcoming Individual Tournaments
+    activeIndividual: Active Individual Tournaments
+    completedIndividual: Completed Individual Tournaments
+    pendingGang: Upcoming Gang Tournaments
+    activeGang: Active Gang Tournaments
+    completedGang: Completed Gang Tournaments
+  backButtonSlot: 45
+topInventory:
+  name: Tournament Menu
+  rows: 3
+  filler: black
+  items:
+    pendingIndividual:
+      isOpenable: true
+      slot: 10
+      material: CLOCK
+      name: '&eUpcoming Individual Tournaments'
+      lore:
+      - ''
+      - '&7Click here to view all individual tournaments'
+      - '&7that are scheduled to happen'
+      isGlowing: false
+    activeIndividual:
+      isOpenable: true
+      slot: 11
+      material: REDSTONE
+      name: '&eActive Individual Tournaments'
+      lore:
+      - ''
+      - '&7Click here to view all individual tournaments'
+      - '&7that are ongoing'
+      isGlowing: false
+    completedIndividual:
+      isOpenable: true
+      slot: 12
+      material: PAPER
+      name: '&eCompleted Individual Tournaments'
+      lore:
+      - ''
+      - '&7Click here to view all individual tournaments'
+      - '&7that have completed'
+      isGlowing: false
+    pendingGang:
+      isOpenable: true
+      slot: 14
+      material: CLOCK
+      name: '&eUpcoming Gang Tournaments'
+      lore:
+      - ''
+      - '&7Click here to view all gang tournaments'
+      - '&7that are scheduled to happen'
+      isGlowing: false
+    activeGang:
+      isOpenable: true
+      slot: 15
+      material: REDSTONE
+      name: '&eActive Gang Tournaments'
+      lore:
+      - ''
+      - '&7Click here to view all gang tournaments'
+      - '&7that are ongoing'
+      isGlowing: false
+    completedGang:
+      isOpenable: true
+      slot: 16
+      material: PAPER
+      name: '&eCompleted Gang Tournaments'
+      lore:
+      - ''
+      - '&7Click here to view all gang tournaments'
+      - '&7that have completed'
+      isGlowing: false

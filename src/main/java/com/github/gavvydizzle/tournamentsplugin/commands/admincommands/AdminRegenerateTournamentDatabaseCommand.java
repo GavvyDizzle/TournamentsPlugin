@@ -1,12 +1,11 @@
 package com.github.gavvydizzle.tournamentsplugin.commands.admincommands;
 
-import com.github.gavvydizzle.tournamentsplugin.TournamentsPlugin;
+import com.github.gavvydizzle.tournamentsplugin.commands.AdminCommandManager;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.Tournament;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.TournamentManager;
 import com.github.mittenmc.serverutils.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
@@ -14,24 +13,16 @@ import java.util.List;
 
 public class AdminRegenerateTournamentDatabaseCommand extends SubCommand {
 
-    @Override
-    public String getName() {
-        return "regenerateTable";
-    }
+    private final TournamentManager tournamentManager;
 
-    @Override
-    public String getDescription() {
-        return "Regenerates a tournament's data table in the database";
-    }
+    public AdminRegenerateTournamentDatabaseCommand(AdminCommandManager commandManager, TournamentManager tournamentManager) {
+        this.tournamentManager = tournamentManager;
 
-    @Override
-    public String getSyntax() {
-        return "/tournadmin regenerateTable <tournament>";
-    }
-
-    @Override
-    public String getColoredSyntax() {
-        return ChatColor.YELLOW + "Usage: " + getSyntax();
+        setName("regenerateTable");
+        setDescription("Regenerates a tournament's data table in the database");
+        setSyntax("/" + commandManager.getCommandDisplayName() + " regenerateTable <id>");
+        setColoredSyntax(ChatColor.YELLOW + getSyntax());
+        setPermission(commandManager.getPermissionPrefix() + getName().toLowerCase());
     }
 
     @Override
@@ -41,7 +32,6 @@ public class AdminRegenerateTournamentDatabaseCommand extends SubCommand {
             return;
         }
 
-        TournamentManager tournamentManager = TournamentsPlugin.getInstance().getTournamentManager();
         Tournament tournament = tournamentManager.getActiveTournamentByID(args[1]);
 
         if (tournament == null) {
@@ -54,11 +44,11 @@ public class AdminRegenerateTournamentDatabaseCommand extends SubCommand {
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> getSubcommandArguments(CommandSender sender, String[] args) {
         ArrayList<String> list = new ArrayList<>();
 
         if (args.length == 2) {
-            StringUtil.copyPartialMatches(args[1], TournamentsPlugin.getInstance().getTournamentManager().getAllTournamentIDs(), list);
+            StringUtil.copyPartialMatches(args[1], tournamentManager.getAllTournamentIDs(), list);
         }
 
         return list;

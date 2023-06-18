@@ -1,12 +1,13 @@
 package com.github.gavvydizzle.tournamentsplugin.commands.admincommands;
 
 import com.github.gavvydizzle.tournamentsplugin.TournamentsPlugin;
+import com.github.gavvydizzle.tournamentsplugin.commands.AdminCommandManager;
 import com.github.gavvydizzle.tournamentsplugin.configs.Configuration;
 import com.github.gavvydizzle.tournamentsplugin.configs.ObjectivesConfig;
+import com.github.gavvydizzle.tournamentsplugin.tournaments.TournamentManager;
 import com.github.mittenmc.serverutils.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
@@ -16,25 +17,16 @@ import java.util.List;
 public class AdminReloadCommand extends SubCommand {
 
     private final List<String> subReloadList = Arrays.asList("disabledWorlds", "gui", "tournaments");
+    private final TournamentManager tournamentManager;
 
-    @Override
-    public String getName() {
-        return "reload";
-    }
+    public AdminReloadCommand(AdminCommandManager commandManager, TournamentManager tournamentManager) {
+        this.tournamentManager = tournamentManager;
 
-    @Override
-    public String getDescription() {
-        return "Reloads this plugin";
-    }
-
-    @Override
-    public String getSyntax() {
-        return "/tournadmin reload";
-    }
-
-    @Override
-    public String getColoredSyntax() {
-        return ChatColor.YELLOW + "Usage: " + getSyntax();
+        setName("reload");
+        setDescription("Reloads this plugin");
+        setSyntax("/" + commandManager.getCommandDisplayName() + " reload [arg]");
+        setColoredSyntax(ChatColor.YELLOW + getSyntax());
+        setPermission(commandManager.getPermissionPrefix() + getName().toLowerCase());
     }
 
     @Override
@@ -69,7 +61,7 @@ public class AdminReloadCommand extends SubCommand {
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> getSubcommandArguments(CommandSender sender, String[] args) {
         ArrayList<String> list = new ArrayList<>();
         if (args.length == 2) {
             StringUtil.copyPartialMatches(args[1], subReloadList, list);
@@ -87,7 +79,7 @@ public class AdminReloadCommand extends SubCommand {
     }
 
     private void reloadTournaments() {
-        TournamentsPlugin.getInstance().getTournamentManager().reloadTournaments();
+        tournamentManager.reloadTournaments();
         TournamentsPlugin.getInstance().getInventoryManager().getTournamentListManager().reloadLists();
     }
 

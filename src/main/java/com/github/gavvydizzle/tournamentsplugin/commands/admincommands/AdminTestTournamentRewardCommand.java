@@ -1,7 +1,8 @@
 package com.github.gavvydizzle.tournamentsplugin.commands.admincommands;
 
-import com.github.gavvydizzle.tournamentsplugin.TournamentsPlugin;
+import com.github.gavvydizzle.tournamentsplugin.commands.AdminCommandManager;
 import com.github.gavvydizzle.tournamentsplugin.tournaments.Tournament;
+import com.github.gavvydizzle.tournamentsplugin.tournaments.TournamentManager;
 import com.github.mittenmc.serverutils.SubCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -17,24 +18,16 @@ import java.util.List;
  */
 public class AdminTestTournamentRewardCommand extends SubCommand {
 
-    @Override
-    public String getName() {
-        return "testReward";
-    }
+    private final TournamentManager tournamentManager;
 
-    @Override
-    public String getDescription() {
-        return "Tests the reward for placement in a tournament";
-    }
+    public AdminTestTournamentRewardCommand(AdminCommandManager commandManager, TournamentManager tournamentManager) {
+        this.tournamentManager = tournamentManager;
 
-    @Override
-    public String getSyntax() {
-        return "/tournadmin testReward <tournament> <placement>";
-    }
-
-    @Override
-    public String getColoredSyntax() {
-        return ChatColor.YELLOW + "Usage: " + getSyntax();
+        setName("testReward");
+        setDescription("Give yourself the rewards for a tournament");
+        setSyntax("/" + commandManager.getCommandDisplayName() + " testReward <id> <placement>");
+        setColoredSyntax(ChatColor.YELLOW + getSyntax());
+        setPermission(commandManager.getPermissionPrefix() + getName().toLowerCase());
     }
 
     @Override
@@ -46,7 +39,7 @@ public class AdminTestTournamentRewardCommand extends SubCommand {
             return;
         }
 
-        Tournament tournament = TournamentsPlugin.getInstance().getTournamentManager().getTournamentByID(args[1]);
+        Tournament tournament = tournamentManager.getTournamentByID(args[1]);
 
         if (tournament == null) {
             sender.sendMessage(ChatColor.RED + "No tournament exists with the id: " + args[1]);
@@ -71,11 +64,11 @@ public class AdminTestTournamentRewardCommand extends SubCommand {
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> getSubcommandArguments(CommandSender sender, String[] args) {
         ArrayList<String> list = new ArrayList<>();
 
         if (args.length == 2) {
-            StringUtil.copyPartialMatches(args[1], TournamentsPlugin.getInstance().getTournamentManager().getAllTournamentIDs(), list);
+            StringUtil.copyPartialMatches(args[1], tournamentManager.getAllTournamentIDs(), list);
         }
         else if (args.length == 3) {
             list.add("placement");
