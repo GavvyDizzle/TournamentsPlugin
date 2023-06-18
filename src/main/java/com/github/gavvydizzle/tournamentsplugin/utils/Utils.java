@@ -38,7 +38,7 @@ public class Utils {
         }
         else {
             try {
-                EntityType et = EntityType.valueOf(material.toUpperCase());
+                EntityType et = EntityType.valueOf(entityType.toUpperCase());
                 return new EntityTypeObjective(objectiveType, et);
             } catch (Exception e) {
                 TournamentsPlugin.getInstance().getLogger().warning("The entityType " + entityType.toUpperCase() + " is not a valid type!");

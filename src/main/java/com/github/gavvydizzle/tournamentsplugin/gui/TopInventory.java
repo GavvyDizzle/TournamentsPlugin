@@ -28,7 +28,7 @@ public class TopInventory implements ClickableGUI {
         FileConfiguration config = GUIConfig.get();
         config.options().copyDefaults(true);
 
-        config.addDefault("topInventory.name", true);
+        config.addDefault("topInventory.name", "Tournaments");
         config.addDefault("topInventory.rows", 3);
         config.addDefault("topInventory.filler", "black");
 

@@ -24,8 +24,6 @@ public final class TournamentsPlugin extends JavaPlugin {
     private ObjectiveManager objectiveManager;
     private InventoryManager inventoryManager;
 
-    private AdminCommandManager adminCommandManager;
-
     @Override
     public void onEnable() {
         instance = this;
@@ -46,9 +44,8 @@ public final class TournamentsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(objectiveManager, this);
         getServer().getPluginManager().registerEvents(inventoryManager, this);
 
-        adminCommandManager = new AdminCommandManager();
+        new AdminCommandManager(getCommand("tournadmin"), tournamentManager, objectiveManager);
         Objects.requireNonNull(getCommand("tourn")).setExecutor(new PlayerCommandManager());
-        Objects.requireNonNull(getCommand("tournadmin")).setExecutor(adminCommandManager);
     }
 
     @Override
@@ -82,10 +79,6 @@ public final class TournamentsPlugin extends JavaPlugin {
 
     public InventoryManager getInventoryManager() {
         return inventoryManager;
-    }
-
-    public AdminCommandManager getAdminCommandManager() {
-        return adminCommandManager;
     }
 
     public Database getDatabase() {
